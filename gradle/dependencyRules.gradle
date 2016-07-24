@@ -1,0 +1,23 @@
+allprojects {
+    configurations.all {
+        resolutionStrategy {
+            gradle.taskGraph.whenReady { taskGraph ->
+                if (!taskGraph.allTasks.any { it.name in ["dependencies", "dependencyInsight"] }) {
+                    failOnVersionConflict()
+                }
+            }
+
+            eachDependency { details ->
+                def requested = details.requested
+
+                if (requested.name == "guava" && requested.version in ["14.0.1", "15.0"]) {
+                    details.useVersion "19.0"
+                }
+
+                if (requested.name == "slf4j-api" && requested.version in ["1.7.5", "1.7.10"]) {
+                    details.useVersion "1.7.21"
+                }
+            }
+        }
+    }
+}

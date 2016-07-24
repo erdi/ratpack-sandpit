@@ -1,0 +1,6 @@
+dependencies {
+    compile 'org.jooq:jooq:3.7.0'
+    compile ratpack.dependency('h2')
+    compile ratpack.dependency('hikari')
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.7.5"
+}

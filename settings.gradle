@@ -1,0 +1,9 @@
+include ":01-handlers",
+    ":02-reusable-handlers",
+    ":03-registries",
+    ":04-advanced-registries",
+    ":05-di-with-guice",
+    ":06-render",
+    ":07-blocking",
+    ":08-custom-parser",
+    ":09-configuration"

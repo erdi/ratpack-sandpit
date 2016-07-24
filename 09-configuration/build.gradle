@@ -1,0 +1,4 @@
+test {
+    systemProperty "config.fourth", "from system properties"
+    environment "CONFIG__FIFTH", "from environment"
+}

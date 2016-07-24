@@ -1,0 +1,56 @@
+apply from: "gradle/dependencyRules.gradle"
+
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "gradle.plugin.io.ratpack:ratpack-gradle:1.4.0-rc-1"
+    }
+}
+
+allprojects {
+    apply plugin: "idea"
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: "io.ratpack.ratpack-groovy"
+
+    dependencies {
+        testCompile "org.spockframework:spock-core:1.1-groovy-2.4-rc-1", {
+            exclude module: "groovy-all"
+        }
+    }
+}
+
+idea {
+    project {
+        jdkName = "1.8"
+        languageLevel = "1.8"
+
+        wildcards.add "Ratpack.groovy"
+        vcs = 'Git'
+
+        ipr.withXml { provider ->
+            def node = provider.asNode()
+            ["codeStyle", "gradle"].each {
+                node.append(new XmlParser().parse(file("gradle/idea/${it}.xml")))
+            }
+        }
+    }
+
+    workspace {
+        iws.withXml { provider ->
+            def node = provider.asNode()
+            def runManager = node.component.find { it.'@name' == 'RunManager' }
+            def defaultJUnitConf = runManager.configuration.find { it.'@default' == 'true' && it.'@type' == 'JUnit' }
+
+            defaultJUnitConf.appendNode("option", [name: "VM_PARAMETERS", value: "-Dconfig.fourth=\"from system properties\""])
+            defaultJUnitConf.envs.first().appendNode("env", [name: "CONFIG__FIFTH", value: "from environment"])
+        }
+    }
+}
