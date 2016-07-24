@@ -10,8 +10,6 @@ ratpack {
          *
          * @see ratpack.guice.BindingsSpec#bind(Class, Class)
          */
-        bind(BookService, DefaultBookService)
-        bind(BookRepository, DefaultBookRepository)
     }
     handlers {
         prefix("book/:isbn") {

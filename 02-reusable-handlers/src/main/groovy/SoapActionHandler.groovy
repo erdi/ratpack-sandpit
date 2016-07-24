@@ -15,13 +15,6 @@ class SoapActionHandler extends GroovyHandler {
     }
 
     void handle(GroovyContext ctx) throws Exception {
-        if (ctx.request.headers.get("SOAPAction") == soapAction) {
-            ctx.byMethod {
-                post { handler.handle(ctx) }
-            }
-        } else {
-            ctx.next()
-        }
     }
 
 }

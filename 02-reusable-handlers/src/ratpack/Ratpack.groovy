@@ -12,14 +12,36 @@ ratpack {
         get {
             response.send "Hello Ratpackers!"
         }
-        prefix("user", new UserHandlers())
-        prefix("api/ws") {
-            soapAction("getTweets") {
-                response.send "api/ws - getTweets"
+        prefix("user") {
+            path {
+                byMethod {
+                    get {
+                        response.send "user"
+                    }
+                    post {
+                        response.send "user"
+                    }
+                }
             }
-            soapAction("getFriends") {
-                response.send "api/ws - getFriends"
+            path(":match:f.*") {
+                def username = pathTokens["match"].tokenize("/").first()
+                log.info "Warning, request for $username"
+                next()
             }
+            prefix(":username") {
+                get {
+                    response.send "user/${allPathTokens["username"]}"
+                }
+                get("tweets") {
+                    response.send "user/${allPathTokens["username"]}/tweets"
+                }
+                get("friends") {
+                    response.send "user/${allPathTokens["username"]}/friends"
+                }
+            }
+        }
+        post("api/ws") {
+            response.send "api/ws - ${request.headers.get("SOAPAction")}"
         }
         files {
             it.path("assets").dir("public")
@@ -27,5 +49,6 @@ ratpack {
         files {
             it.dir("pages").indexFiles("index.html")
         }
+
     }
 }

@@ -28,9 +28,6 @@ public class DefaultBookRepository implements BookRepository {
      */
     @Override
     public Operation addBook(Book book) {
-        Blocking.op {
-            dsl.newRecord(BOOK, book).store()
-        }
     }
 
     /**
@@ -44,9 +41,6 @@ public class DefaultBookRepository implements BookRepository {
      */
     @Override
     public Promise<List<Book>> getBooks() {
-        Blocking.get {
-            dsl.select().from(BOOK).fetchInto(Book)
-        }
     }
 
     /**
@@ -63,9 +57,6 @@ public class DefaultBookRepository implements BookRepository {
      */
     @Override
     public Promise<Book> getBook(String isbn) {
-        Blocking.get {
-            dsl.select().from(BOOK).where(BOOK.ISBN.equal(isbn)).fetchOneInto(Book)
-        }
     }
 
 }

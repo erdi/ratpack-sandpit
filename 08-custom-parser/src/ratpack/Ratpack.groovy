@@ -1,6 +1,3 @@
-import XmlParser
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import ratpack.h2.H2Module
 import ratpack.hikari.HikariModule
 import ratpack.jackson.Jackson
@@ -19,9 +16,6 @@ ratpack {
         })
         bind(BookRepository, DefaultBookRepository)
         bind(BookService, DefaultBookService)
-        bind(ObjectMapper)
-        bind(XmlParser)
-        add(XmlMapper, new XmlMapper())
     }
 
     handlers {

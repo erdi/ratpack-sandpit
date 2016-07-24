@@ -31,9 +31,6 @@ ratpack {
                  * @see Promise#then(ratpack.func.Action)
                  */
                 Promise<Book> book = bookService.getBook(isbn)
-
-                book.onNull { clientError(NOT_FOUND.code()) }
-                    .then { render Jackson.json(it) }
             }
             all { BookService bookService ->
                 byMethod {
@@ -42,7 +39,6 @@ ratpack {
                          *  TODO Render the promised list of books as json
                          */
                         Promise<List<Book>> books = bookService.books
-                        books.then { render Jackson.json(it) }
                     }
                     post {
                         /**
@@ -51,11 +47,6 @@ ratpack {
                          * @see ratpack.handling.Context#parse(Class)
                          * @see Promise#nextOp(ratpack.func.Function)
                          */
-                        parse(Book).nextOp {
-                            bookService.addBook(it)
-                        }.then {
-                            render Jackson.json([message: "success"])
-                        }
                     }
                 }
             }

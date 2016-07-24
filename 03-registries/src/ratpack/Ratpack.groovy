@@ -11,10 +11,6 @@ ratpack {
      * @see ratpack.registry.RegistrySpec#add(Class, Object)
      */
     handlers {
-        register {
-            add(BookService, new DefaultBookService())
-        }
-
         prefix("book/:isbn") {
             /**
              * TODO add your new common handler here
@@ -22,24 +18,23 @@ ratpack {
              * @see ratpack.handling.Context#next(ratpack.registry.Registry)
              * @see Registry#single(Object)
              */
-            all { BookService bookService ->
-                String isbn = allPathTokens["isbn"]
-                Book b = bookService.getBook(isbn)
-                next(Registry.single(b))
-            }
 
             get("title") {
                 // Objects added to the registry by upstream handlers are available via type-lookup
-                Book b = context.get(Book)
+                BookService bookService = context.get(BookService)
 
                 //TODO refactor this into a common handler for this chain
+                String isbn = allPathTokens["isbn"]
+                Book b = bookService.getBook(isbn)
 
                 response.send b.title
             }
 
-            get("author") { Book b -> // Registry objects can also be "injected" into handler closures
+            get("author") { BookService bookService -> // Registry objects can also be "injected" into handler closures
 
                 //TODO refactor this into a common handler for this chain
+                String isbn = allPathTokens["isbn"]
+                Book b = bookService.getBook(isbn)
 
                 response.send b.author
             }

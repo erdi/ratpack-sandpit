@@ -62,7 +62,7 @@ class ErrorsSpec extends Specification {
 
     /**
      * You will need to add a different message for requests that are prefixed with with-custom-error-message path but it needs to be available
-     * Even outside of the custom error message chain because a client error for an unknown path is handled by the handler appended to your chain by Ratpack.
+     * even outside of the custom error message chain because a client error for an unknown path is handled by the handler appended to your chain by Ratpack.
      *
      * Use the fact that Request is-a Registry and it is checked for objects by Context before current chain level registry is being checked.
      */
